@@ -12,13 +12,13 @@ export class AuthGuard implements CanActivate {
     console.log('Extracted Token:', token);
     if (!token) return false;
     try {
-      console.log('Verifying token...');
+      // console.log('Verifying token...');
       const jwtString = await this.configService.get<string>('JWT_SECRET');
-      console.log('Using JWT Secret:', jwtString);
+      // console.log('Using JWT Secret:', jwtString);
       const payload = await this.jwtService.verifyAsync(token, {
       secret: this.configService.get<string>('JWT_SECRET'),
     });
-      console.log('Token payload:', payload);
+      // console.log('Token payload:', payload);
       request['user'] = payload;
       return true;
     } catch {

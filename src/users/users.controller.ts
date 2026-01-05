@@ -1,37 +1,45 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { CreateUserDto, FindOneParams, UpdateUserDto } from './dto/user.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { UsersService } from './users.service.js';
+import { FindOneParams, UpdateUserDTO, ReturnAllUsersDTO, ReturnUserDTO, CreateUserDTO } from '../dto/user.dto.js';
 import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard.js';
+import { User, Prisma } from '../generated/prisma/client.js';
+import { RolesGuard } from '../auth/role.guard.js';
+import { Role } from '../enums/role.enum.js';
+import { Roles } from '../auth/role.decorator.js';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  create(@Body() data: CreateUserDTO): Promise<ReturnUserDTO> {
+    return this.usersService.createUser(data);
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(): Promise<ReturnAllUsersDTO> {
+    return this.usersService.getAllUsers({ take: 10 });
   }
 
-  @UseGuards(AuthGuard)
+  @Roles(Role.Admin) 
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':id')
-  findOne(@Param() params: FindOneParams) {
-    // const id = Number(params.id);
-    return this.usersService.findOne(params.id);
+  findOne(@Param() params: FindOneParams): Promise<ReturnUserDTO> {
+    const id = Number(params.id);
+    return this.usersService.getUser({ id });
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDTO) {
+    return this.usersService.updateUser({
+      where: { id: Number(id) },
+      data: updateUserDto,
+    });
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.usersService.deleteUser({ id: Number(id) });
+  // }
 }
