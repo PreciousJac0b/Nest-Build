@@ -34,13 +34,16 @@ enum BookStatus {
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
-  name      String?
+  firstName      String?
+  lastName      String?
   role      Role     @default(USER)
   password  String
   createdAt DateTime @default(now())
 
   bookRequests BookRequest[]
   notifications Notification[]
+
+  approvedBookRequests BookRequest[] @relation("BookRequestApprovedBy")
 }
 
 model Book {
@@ -61,9 +64,14 @@ model BookRequest {
   status    RequestStatus
   createdAt DateTime @default(now())
   updatedAt DateTime      @updatedAt
+
+  approvedByAdminId Int?
+  approvedAt        DateTime?
   
   user      User          @relation(fields: [userId], references: [id])
   book      Book          @relation(fields: [bookId], references: [id])
+
+  approvedByAdmin User? @relation("BookRequestApprovedBy", fields: [approvedByAdminId], references: [id])
 }
 
 model Notification {

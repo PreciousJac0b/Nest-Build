@@ -29,7 +29,10 @@ export class AuthService {
     }
   }
 
-  async signUp(name: string, email: string, password: string): Promise<CreateUserReturnDTO> {
+  // Modify auth middleware to be unauthorized when they don't have the right token or role available. 
+  // Forbidden should be when they don't have access.
+
+  async signUp(firstName: string, lastName: string, email: string, password: string): Promise<CreateUserReturnDTO> {
     const existingUser = await this.usersService.getUser({ email });
     if (existingUser.data) {
       return {
@@ -40,7 +43,7 @@ export class AuthService {
 
     const hashedPassword = await HashUtil.hashPassword(password);
 
-    const newUser = await this.usersService.createUser({ name, email, password: hashedPassword });
+    const newUser = await this.usersService.createUser({ firstName, lastName, email, password: hashedPassword });
 
     if (!newUser.data) {
       return {
@@ -59,7 +62,7 @@ export class AuthService {
 
     return {
       success: true,
-      message: 'User created successfully',
+      message: 'User signed up successfully',
       data: newUser.data,
     };
   }

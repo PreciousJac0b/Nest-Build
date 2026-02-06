@@ -9,7 +9,7 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
-    console.log('Extracted Token:', token);
+    // console.log('Extracted Token:', token);
     if (!token) return false;
     try {
       // console.log('Verifying token...');

@@ -4,7 +4,9 @@ import { CreateBookDTO, ReturnBookDTO, ReturnBooksDTO } from '../dto/book.dto.js
 import { FindOneParams, ReturnUserDTO } from '../dto/user.dto.js';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from '../cloudinary/cloudinary.service.js';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('B ooks')
 @Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService, private readonly cloudinaryService: CloudinaryService) { }
@@ -30,6 +32,6 @@ export class BooksController {
 
       coverUrl = uploadResult.secure_url;
     }
-    return this.booksService.createBook({cover: coverUrl ?? 'default-cover.jpg', ...data});
+    return this.booksService.createBook({...data, cover: coverUrl ?? 'default-cover.jpg'});
   }
 }

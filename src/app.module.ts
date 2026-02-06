@@ -9,8 +9,8 @@ import { ConfigModule } from '@nestjs/config';
 import { ConfigService } from '@nestjs/config';
 import { MailModule } from './mail/mail.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
-import { CloudinaryModule } from './cloudinary/cloudinary.module';
-import { AdminModule } from './admin/admin.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module.js';
+import { AdminModule } from './admin/admin.module.js';
 
 @Module({
   imports: [
@@ -33,4 +33,16 @@ import { AdminModule } from './admin/admin.module';
   controllers: [AppController],
   providers: [AppService]
 })
-export class AppModule {}
+export class AppModule {
+  // constructor(private configService: ConfigService) {
+  //   console.log('[ENV CHECK]', {
+  //     CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+  //     CLOUDINARY_API_SECRET_SET: !!process.env.CLOUDINARY_API_SECRET,
+  //   });
+
+  //   console.log('[ENV CHECK ConfigService]', {
+  //     CLOUDINARY_API_KEY: this.configService.get('CLOUDINARY_API_KEY'),
+  //     CLOUDINARY_API_SECRET_SET: !!this.configService.get('CLOUDINARY_API_SECRET'),
+  //   });
+  // }
+}
