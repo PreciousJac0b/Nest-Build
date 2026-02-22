@@ -1,0 +1,1 @@
+export type PaystackResponse<T> = { status: boolean; message: string; data: T };

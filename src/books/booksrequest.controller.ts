@@ -42,15 +42,15 @@ export class BooksRequestController {
     return this.booksRequestsService.rejectBookRequest(requestId, adminId);
   }
 
-  @Post('refresh')
-  @UseGuards(AuthGuard)
-  refreshBookRequestPage(@Req() req) {
-    return this.booksRequestsService.refreshBookRequestPage();
-  }
+  // @Post('refresh')
+  // @UseGuards(AuthGuard)
+  // refreshBookRequestPage(@Req() req) {
+  //   return this.booksRequestsService.refreshBookRequestPage();
+  // }
 
-  @Post('close')
-  @UseGuards(AuthGuard)
-  closeBookRequestPage(@Req() req) {
-    return this.booksRequestsService.closeBookRequestPage();
-  }
+  // @Post('close')
+  // @UseGuards(AuthGuard)
+  // closeBookRequestPage(@Req() req) {
+  //   return this.booksRequestsService.closeBookRequestPage();
+  // }
 }

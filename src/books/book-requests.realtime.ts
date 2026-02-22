@@ -15,9 +15,7 @@ export class BookRequestsRealtime {
   }
 
   approveRequestNotification(bookRequest: any) {
-    console.log("Book Request: ", bookRequest)
     this.server?.to('admins').emit('book-request-updated', bookRequest);
-    console.log(`Emitting book-request-updated for request ${bookRequest.id} to admins room`);
   }
 
   rejectRequestNotification(bookRequest: any) {
@@ -25,7 +23,6 @@ export class BookRequestsRealtime {
   }
 
   notifyUser(userId: number, payload: any) {
-    console.log(`Notifying user-${userId}:`, payload);
     this.server?.to(`user-${userId}`).emit('book-request-update', payload);
   }
 }

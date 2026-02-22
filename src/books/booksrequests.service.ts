@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { BookRequestsRealtime } from './book-requests.realtime.js';
-import { initAdminBookRequestsPage, destroyAdminBookRequestsPage } from './book-client.js';
+// import { initAdminBookRequestsPage, destroyAdminBookRequestsPage } from './book-client.js';
 
 @Injectable()
 export class BooksRequestsService {
@@ -90,6 +90,8 @@ export class BooksRequestsService {
         message: 'Book request has either been approved/rejected or does not exist',
       };
     }
+
+    
     const updatedRequest = await this.prisma.bookRequest.update({
       where: { id: requestId },
       data: {
@@ -110,10 +112,8 @@ export class BooksRequestsService {
       }
     };
 
-    console.log("Emitting approve notification");
     this.realtime.approveRequestNotification(updatedRequest);
 
-    console.log("Notifying user of approval");
     this.realtime.notifyUser(updatedRequest.userId, {
       requestId: updatedRequest.id,
       status: updatedRequest.status,
@@ -188,13 +188,13 @@ export class BooksRequestsService {
     };
   }
 
-  async refreshBookRequestPage() {
-    initAdminBookRequestsPage();
-    return
-  }
+  // async refreshBookRequestPage() {
+  //   initAdminBookRequestsPage();
+  //   return
+  // }
 
-  async closeBookRequestPage() {
-    destroyAdminBookRequestsPage();
-    return
-  }
+  // async closeBookRequestPage() {
+  //   destroyAdminBookRequestsPage();
+  //   return
+  // }
 }

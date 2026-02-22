@@ -18,7 +18,6 @@ export class AuthService {
       return 'Invalid email or password';
     }
     const { password: _, createdAt, ...result } = user;
-    console.log(result);
     const payload = { ...result, sub: user.id };
     const token = await this.jwtService.signAsync(payload);
     result['access_token'] = token;
